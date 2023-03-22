@@ -1,24 +1,42 @@
+import { useState } from "react";
+
 const DisplayToDos = ({ toDoList, SetToDoList }) => {
+  const [style, setStyle] = useState(false);
+
+  const completed = (id, e) => {
+    toDoList.map((todo) => {
+      if (Date.now(todo.id) === Date.now(id)) {
+        todo.complete = true;
+      }
+      SetToDoList(toDoList);
+
+      if (style === false) {
+        e.target.parentElement.style.textDecoration = "line-through";
+        e.target.parentElement.querySelector("input").click();
+        setStyle(true);
+      }
+      if (style === true) {
+        e.target.parentElement.style.textDecoration = "initial";
+        e.target.parentElement.querySelector("input").click();
+        setStyle(false);
+      }
+      return todo;
+    });
+  };
+
   const deleteToDo = (id) => {
     const newList = toDoList.filter((todo) => todo.id !== id);
     SetToDoList(newList);
   };
 
-  const checkboxClicked = (id) => {
-    toDoList.map((todo) => {
-      if (todo.id === id) {
-        todo.complete = true;
-      }
-      return todo;
-    });
-
-    SetToDoList(toDoList);
-    console.log(toDoList);
+  const checkboxClicked = (id, e) => {
+    completed(id, e);
   };
 
-  const handleClick = (e) => {
-    e.target.parentElement.style.textDecoration = "line-through";
+  const handleClick = (id, e) => {
+    completed(id, e);
   };
+
   const toDoItems = toDoList.map((toDo) => (
     <li key={toDo.id}>
       <span className="li-to-do"> {toDo.toDo}</span>
@@ -26,7 +44,7 @@ const DisplayToDos = ({ toDoList, SetToDoList }) => {
       <input
         className="checkbox"
         type="checkbox"
-        onChange={() => checkboxClicked(toDo.id)}
+        onChange={(e) => checkboxClicked(toDo.id, e)}
       />
       <button
         onClick={() => {
@@ -40,7 +58,13 @@ const DisplayToDos = ({ toDoList, SetToDoList }) => {
   return (
     <div>
       <h1>My To Do</h1>
-      <ul onClick={handleClick}>{toDoItems}</ul>
+      <ul
+        onClick={(e) => {
+          handleClick(toDoItems[0].key, e);
+        }}
+      >
+        {toDoItems}
+      </ul>
     </div>
   );
 };
