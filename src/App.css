@@ -11,7 +11,7 @@ body {
 }
 
 .new-to-do {
-  width: 80%;
+  width: 60%;
   margin: 0 auto;
   padding: 1em;
   border: 1px solid #cccccc;
@@ -63,7 +63,7 @@ h1 {
 }
 
 ul {
-  width: 80%;
+  width: 60%;
   margin: 2em auto 0;
   padding: 1em;
   border: 1px solid #cccccc;
