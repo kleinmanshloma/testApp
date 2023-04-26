@@ -1,70 +1,56 @@
 import { useState } from "react";
 
 const DisplayToDos = ({ toDoList, SetToDoList }) => {
-  const [style, setStyle] = useState(false);
+  const [completedIDs, setCompletedIDs] = useState([]);
 
-  const completed = (id, e) => {
-    toDoList.map((todo) => {
-      if (Date.now(todo.id) === Date.now(id)) {
-        todo.complete = true;
-      }
-      SetToDoList(toDoList);
-
-      if (style === false) {
-        e.target.parentElement.style.textDecoration = "line-through";
-        e.target.parentElement.querySelector("input").click();
-        setStyle(true);
-      }
-      if (style === true) {
-        e.target.parentElement.style.textDecoration = "initial";
-        e.target.parentElement.querySelector("input").click();
-        setStyle(false);
-      }
-      return todo;
-    });
+  const handleComplete = (id, e) => {
+    if (completedIDs.includes(id)) {
+      e.target.parentElement.style.textDecoration = "initial";
+      setCompletedIDs(completedIDs.filter((completedID) => completedID !== id));
+    } else {
+      e.target.parentElement.style.textDecoration = "line-through";
+      setCompletedIDs([...completedIDs, id]);
+    }
   };
 
-  const deleteToDo = (id) => {
-    const newList = toDoList.filter((todo) => todo.id !== id);
-    SetToDoList(newList);
+  const handleClickElement = (id, e) => {
+    if (completedIDs.includes(id)) {
+      e.target.parentElement.style.textDecoration = "initial";
+      setCompletedIDs(completedIDs.filter((completedID) => completedID !== id));
+    } else {
+      e.target.parentElement.style.textDecoration = "line-through";
+      setCompletedIDs([...completedIDs, id]);
+    }
+    /* setCompletedIDs([...completedIDs, ]);id
+    } */
   };
 
-  const checkboxClicked = (id, e) => {
-    completed(id, e);
+  const handleDelete = (id) => {
+    SetToDoList(toDoList.filter((toDo) => toDo.id !== id));
   };
 
-  const handleClick = (id, e) => {
-    completed(id, e);
-  };
+  const toDoItems = toDoList.map((toDo) => {
+    const isCompleted = completedIDs.includes(toDo.id);
 
-  const toDoItems = toDoList.map((toDo) => (
-    <li key={toDo.id}>
-      <span className="li-to-do"> {toDo.toDo}</span>
-      <span className="li-description"> {toDo.description}</span>
-      <input
-        className="checkbox"
-        type="checkbox"
-        onChange={(e) => checkboxClicked(toDo.id, e)}
-      />
-      <button
-        onClick={() => {
-          deleteToDo(toDo.id);
-        }}
-      >
-        Delete
-      </button>
-    </li>
-  ));
+    return (
+      <li key={toDo.id} className={isCompleted ? "completed" : ""}>
+        <span className="li-to-do">{toDo.toDo}</span>
+        <span className="li-description">{toDo.description}</span>
+        <input
+          className="checkbox"
+          type="checkbox"
+          checked={isCompleted}
+          onChange={(e) => handleComplete(toDo.id, e)}
+        />
+        <button onClick={() => handleDelete(toDo.id)}>Delete</button>
+      </li>
+    );
+  });
+
   return (
     <div>
       <h1>My To Do</h1>
-      <ul
-        onClick={(e) => {
-          handleClick(toDoItems[0].key, e);
-        }}
-      >
-        {toDoItems}
-      </ul>
+      <ul onClick={(e) => handleClickElement(e)}>{toDoItems}</ul>
     </div>
   );
 };
