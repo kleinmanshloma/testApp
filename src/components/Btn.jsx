@@ -1,3 +1,5 @@
+import "./centered.css";
+
 const Btn = ({
   toDo,
   toDoDescription,
@@ -25,7 +27,9 @@ const Btn = ({
 
   return (
     <div className="new-to-do-btn">
-      <div onClick={addToDos}>Add To Do</div>
+      <div className="centered" onClick={addToDos}>
+        Add To Do
+      </div>
     </div>
   );
 };
