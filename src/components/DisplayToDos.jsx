@@ -17,10 +17,10 @@ const DisplayToDos = ({ toDoList, SetToDoList }) => {
     if (completedIDs.includes(id)) {
       e.target.parentElement.style.textDecoration = "initial";
       setCompletedIDs(completedIDs.filter((completedID) => completedID !== id));
-    } else {
+    } /* else {
       e.target.parentElement.style.textDecoration = "line-through";
       setCompletedIDs([...completedIDs, id]);
-    }
+    } */
   };
 
   const handleDelete = (id) => {
