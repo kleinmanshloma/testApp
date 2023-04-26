@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AddToDo from "./components/AddToDo";
 import DisplayToDos from "./components/DisplayToDos";
-/* import Btn from "./components/Btn"; */
+// import Btn from "./components/Btn";
 
 import "./App.css";
 
@@ -12,16 +12,22 @@ function App() {
 
   return (
     <div>
-      <h1>To Do List</h1>
-      <AddToDo
-        toDo={toDo}
-        toDoDescription={toDoDescription}
-        toDoList={toDoList}
-        SetToDoList={SetToDoList}
-        setToDo={setToDo}
-        setToDoDescription={setToDoDescription}
-      />
-      <DisplayToDos toDoList={toDoList} SetToDoList={SetToDoList} />
+      {
+        <>
+          <h1>To Do List</h1>
+          <AddToDo
+            toDo={toDo}
+            toDoDescription={toDoDescription}
+            toDoList={toDoList}
+            SetToDoList={SetToDoList}
+            setToDo={setToDo}
+            setToDoDescription={setToDoDescription}
+          />
+        </>
+      }
+      {toDoList.length > 0 && (
+        <DisplayToDos toDoList={toDoList} SetToDoList={SetToDoList} />
+      )}
     </div>
   );
 }

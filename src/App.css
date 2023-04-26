@@ -2,17 +2,22 @@ body {
   font-family: Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
-  background-color: #9198c055;
+  background-color: #f7f7f7;
   color: #333333;
 }
 
+.center {
+  text-align: center;
+}
+
 .new-to-do {
-  width: 480px;
+  width: 80%;
   margin: 0 auto;
   padding: 1em;
   border: 1px solid #cccccc;
   border-radius: 5px;
-  background-color: #9198c0e5;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -40,44 +45,73 @@ h1 {
 }
 
 .new-to-do-btn {
-  text-align: center;
+  display: block;
+  margin: 1em auto;
   padding: 0.5em 1em;
-  margin-top: 1.5em;
-  color: #00093e;
+  color: #ffffff;
   font-size: 1em;
   font-weight: bold;
-  border-width: 1px;
-  border-style: solid;
+  border: none;
   border-radius: 5px;
+  background-color: #00093e;
   cursor: pointer;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .new-to-do-btn:hover {
-  background-color: #00093e;
-  color: white;
+  background-color: #3d3d3d;
 }
 
 ul {
-  width: 450px;
-  margin: 0 auto;
-  padding: 1em 2em;
+  width: 80%;
+  margin: 2em auto 0;
+  padding: 1em;
   border: 1px solid #cccccc;
   border-radius: 5px;
-  background-color: #9198c0e5;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   list-style-type: none;
 }
 
 li {
   font-size: 24px;
   color: #00093e;
+  position: relative;
+  padding-left: 2.5em;
+  margin-bottom: 1em;
 }
 
-.li-description {
-  padding-left: 72px;
+.completed {
+  text-decoration: line-through;
+  color: #8a8a8a;
 }
 
-li .checkbox {
-  display: inline-block;
-  margin-left: 5rem;
-  /* padding-left: 40rem; */
+.checkbox {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 1em;
+}
+
+.delete-btn {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 1em;
+  padding: 0.5em 1em;
+  color: #ffffff;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  background-color: #d93939;
+  cursor: pointer;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.delete-btn:hover {
+  background-color: #ff5252;
 }

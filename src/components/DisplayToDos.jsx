@@ -21,8 +21,6 @@ const DisplayToDos = ({ toDoList, SetToDoList }) => {
       e.target.parentElement.style.textDecoration = "line-through";
       setCompletedIDs([...completedIDs, id]);
     }
-    /* setCompletedIDs([...completedIDs, ]);id
-    } */
   };
 
   const handleDelete = (id) => {
