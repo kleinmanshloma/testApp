@@ -24,6 +24,12 @@ const DisplayToDos = ({ toDoList, SetToDoList }) => {
 
     return (
       <li key={toDo.id} className={isCompleted ? "completed" : ""}>
+        {isCompleted && (
+          <div className="completed-overlay">
+            <span className="completed-text">Completed</span>
+          </div>
+        )}
+
         <div className="container ">
           <div className="flex-div ">
             <span className="li-to-do ">TO DO</span>
@@ -42,24 +48,27 @@ const DisplayToDos = ({ toDoList, SetToDoList }) => {
             <span className="to-do li-time-name">{toDo.time}</span>
           </div>
 
-          <div className="flex-div">
+          <div className="flex-div margin-bottom">
             <span className="li-date">ON</span>
             <span className="to-do li-date-name">{toDo.date}</span>
           </div>
-
-          <input
-            className="checkbox"
-            type="checkbox"
-            checked={isCompleted}
-            onChange={(e) => handleComplete(toDo.id, e)}
-          />
         </div>
-        <button
-          className="move-left button-delete"
-          onClick={() => handleDelete(toDo.id)}
-        >
-          Delete
-        </button>
+        <div className="margin-top">
+          <button
+            className="move-left button-delete"
+            onClick={() => handleDelete(toDo.id)}
+          >
+            Delete
+          </button>
+
+          <button
+            className="move-left button-completed"
+            onClick={(e) => handleComplete(toDo.id, e)}
+          >
+            <input className="checkbox" type="checkbox" checked={isCompleted} />{" "}
+            completed
+          </button>
+        </div>
       </li>
     );
   });
