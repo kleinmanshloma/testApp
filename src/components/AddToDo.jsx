@@ -4,9 +4,13 @@ const AddToDo = ({
   toDoList,
   toDo,
   toDoDescription,
+  toDoTime,
+  toDoDate,
   setToDoDescription,
   setToDo,
   SetToDoList,
+  setToDoTime,
+  setToDoDate,
 }) => {
   return (
     <div className="new-to-do">
@@ -29,14 +33,36 @@ const AddToDo = ({
             onChange={(e) => setToDoDescription(e.target.value)}
           />
         </div>
+        <div>
+          <label htmlFor="new-to-do">Time</label>
+          <input
+            className="textarea"
+            type="time"
+            value={toDoTime}
+            onChange={(e) => setToDoTime(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="new-to-do">Date</label>
+          <input
+            className="textarea"
+            type="date"
+            value={toDoDate}
+            onChange={(e) => setToDoDate(e.target.value)}
+          />
+        </div>
       </form>
       <Btn
         toDo={toDo}
         toDoDescription={toDoDescription}
         toDoList={toDoList}
+        toDoTime={toDoTime}
+        toDoDate={toDoDate}
         SetToDoList={SetToDoList}
         setToDo={setToDo}
         setToDoDescription={setToDoDescription}
+        setToDoTime={setToDoTime}
+        setToDoDate={setToDoDate}
       />
     </div>
   );

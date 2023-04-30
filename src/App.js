@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddToDo from "./components/AddToDo";
 import DisplayToDos from "./components/DisplayToDos";
-// import Btn from "./components/Btn";
 
 import "./App.css";
 
@@ -9,6 +8,20 @@ function App() {
   const [toDoList, SetToDoList] = useState([]);
   const [toDo, setToDo] = useState("");
   const [toDoDescription, setToDoDescription] = useState("");
+  const [toDoTime, setToDoTime] = useState("");
+  const [toDoDate, setToDoDate] = useState("");
+
+  // save and retrieve data from local storage
+  useEffect(() => {
+    localStorage.setItem("toDoList", JSON.stringify(toDoList));
+  }, [toDoList]);
+
+  useEffect(() => {
+    const toDoList = JSON.parse(localStorage.getItem("toDoList"));
+    if (toDoList && toDoList.length > 0) {
+      SetToDoList(toDoList);
+    }
+  }, []);
 
   return (
     <div>
@@ -22,6 +35,10 @@ function App() {
             SetToDoList={SetToDoList}
             setToDo={setToDo}
             setToDoDescription={setToDoDescription}
+            toDoTime={toDoTime}
+            setToDoTime={setToDoTime}
+            toDoDate={toDoDate}
+            setToDoDate={setToDoDate}
           />
         </>
       }

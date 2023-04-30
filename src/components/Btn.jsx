@@ -4,9 +4,13 @@ const Btn = ({
   toDo,
   toDoDescription,
   toDoList,
+  toDoTime,
+  toDoDate,
   SetToDoList,
   setToDoDescription,
   setToDo,
+  setToDoTime,
+  setToDoDate,
 }) => {
   const addToDos = () => {
     // create obj for to do
@@ -15,6 +19,8 @@ const Btn = ({
       toDo: toDo,
       description: toDoDescription,
       complete: false,
+      time: toDoTime,
+      date: toDoDate,
     };
 
     // add the to do to the list
@@ -23,6 +29,9 @@ const Btn = ({
     // clear the fields
     setToDo("");
     setToDoDescription("");
+    // set the time and date  to the initial value
+    setToDoTime("00:00");
+    setToDoDate(new Date().toISOString().slice(0, 10));
   };
 
   return (
