@@ -12,9 +12,6 @@ function App() {
   const [toDoDate, setToDoDate] = useState("");
 
   // save and retrieve data from local storage
-  useEffect(() => {
-    localStorage.setItem("toDoList", JSON.stringify(toDoList));
-  }, [toDoList]);
 
   useEffect(() => {
     const toDoList = JSON.parse(localStorage.getItem("toDoList"));
@@ -22,6 +19,10 @@ function App() {
       SetToDoList(toDoList);
     }
   }, []);
+
+  /*  useEffect(() => {
+    localStorage.setItem("toDoList", JSON.stringify(toDoList));
+  }, [toDoList]); */
 
   return (
     <div>

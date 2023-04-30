@@ -24,13 +24,29 @@ const DisplayToDos = ({ toDoList, SetToDoList }) => {
 
     return (
       <li key={toDo.id} className={isCompleted ? "completed" : ""}>
-        <div className="container">
-          <span className="li-to-do">TO DO - "{toDo.toDo}" </span>
-          <span className="li-description">
-            DESCRIPTION - "{toDo.description}"
-          </span>
-          <span className="li-time">ON - "{toDo.time}" </span>
-          <span className="li-date"> - "{toDo.date}" </span>
+        <div className="container ">
+          <div className="flex-div ">
+            <span className="li-to-do ">TO DO</span>
+            <span className="to-do li-to-do-name ">{toDo.toDo}</span>
+          </div>
+
+          <div className="flex-div">
+            <span className="li-description">DESCRIPTION</span>
+            <span className="to-do  li-description-name">
+              {toDo.description}
+            </span>
+          </div>
+
+          <div className="flex-div">
+            <span className="li-time">ON</span>
+            <span className="to-do li-time-name">{toDo.time}</span>
+          </div>
+
+          <div className="flex-div">
+            <span className="li-date">ON</span>
+            <span className="to-do li-date-name">{toDo.date}</span>
+          </div>
+
           <input
             className="checkbox"
             type="checkbox"

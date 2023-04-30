@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./centered.css";
 
 const Btn = ({
@@ -22,6 +23,8 @@ const Btn = ({
       time: toDoTime,
       date: toDoDate,
     };
+
+    localStorage.setItem("toDoList", JSON.stringify([...toDoList, addToDo]));
 
     // add the to do to the list
     SetToDoList([...toDoList, addToDo]);
