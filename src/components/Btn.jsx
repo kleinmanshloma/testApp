@@ -7,11 +7,12 @@ const Btn = ({
   toDoList,
   toDoTime,
   toDoDate,
-  SetToDoList,
+  setToDoList,
   setToDoDescription,
   setToDo,
   setToDoTime,
   setToDoDate,
+  completedIDs,
 }) => {
   const addToDos = () => {
     // create obj for to do
@@ -19,15 +20,15 @@ const Btn = ({
       id: new Date(),
       toDo: toDo,
       description: toDoDescription,
-      complete: false,
+      complete: completedIDs,
       time: toDoTime,
       date: toDoDate,
     };
 
-    localStorage.setItem("toDoList", JSON.stringify([...toDoList, addToDo]));
+    /*     localStorage.setItem("toDoList", JSON.stringify([...toDoList, addToDo])); */
 
     // add the to do to the list
-    SetToDoList([...toDoList, addToDo]);
+    setToDoList([...toDoList, addToDo]);
 
     // clear the fields
     setToDo("");

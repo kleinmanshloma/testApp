@@ -1,15 +1,35 @@
+ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  list-style-type: none;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.li {
+  display: flex;
+  flex-direction: column;
+  margin: -15px;
+  margin-bottom: 2px;
+  padding-left: 0px;
+  width: 90%;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  margin: 0 auto;
-  width: 90%;
+  margin-top: 2rem;
+  width: 95%;
   height: 100%;
   background-color: #f5f5f5;
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-  padding: 20px;
+  padding: 30px;
   flex-wrap: wrap;
 }
 
@@ -18,11 +38,6 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-}
-
-.move-left {
-  /* move it to the left */
-  margin-left: -60px;
 }
 
 .button-delete {
@@ -64,7 +79,6 @@
 span {
   font-size: 20px;
   font-weight: bold;
-  /*   margin-right: 10rem; */
   margin-top: 5px;
 }
 
@@ -82,7 +96,7 @@ span {
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: rotate(-30deg);
+  transform: rotate(-26deg);
 }
 
 .completed-text {

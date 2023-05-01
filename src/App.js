@@ -5,24 +5,25 @@ import DisplayToDos from "./components/DisplayToDos";
 import "./App.css";
 
 function App() {
-  const [toDoList, SetToDoList] = useState([]);
+  const [toDoList, setToDoList] = useState([]);
   const [toDo, setToDo] = useState("");
   const [toDoDescription, setToDoDescription] = useState("");
   const [toDoTime, setToDoTime] = useState("");
   const [toDoDate, setToDoDate] = useState("");
+  const [completedIDs, setCompletedIDs] = useState([]);
 
   // save and retrieve data from local storage
 
   useEffect(() => {
-    const toDoList = JSON.parse(localStorage.getItem("toDoList"));
-    if (toDoList && toDoList.length > 0) {
-      SetToDoList(toDoList);
+    const toDoListjson = JSON.parse(localStorage.getItem("toDoList"));
+    if (toDoListjson && toDoListjson.length > 0) {
+      setToDoList(toDoListjson);
     }
   }, []);
 
-  /*  useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("toDoList", JSON.stringify(toDoList));
-  }, [toDoList]); */
+  }, [toDoList]);
 
   return (
     <div>
@@ -33,18 +34,25 @@ function App() {
             toDo={toDo}
             toDoDescription={toDoDescription}
             toDoList={toDoList}
-            SetToDoList={SetToDoList}
+            setToDoList={setToDoList}
             setToDo={setToDo}
             setToDoDescription={setToDoDescription}
             toDoTime={toDoTime}
             setToDoTime={setToDoTime}
             toDoDate={toDoDate}
             setToDoDate={setToDoDate}
+            completedIDs={completedIDs}
+            setCompletedIDs={setCompletedIDs}
           />
         </>
       }
       {toDoList.length > 0 && (
-        <DisplayToDos toDoList={toDoList} SetToDoList={SetToDoList} />
+        <DisplayToDos
+          toDoList={toDoList}
+          setToDoList={setToDoList}
+          completedIDs={completedIDs}
+          setCompletedIDs={setCompletedIDs}
+        />
       )}
     </div>
   );

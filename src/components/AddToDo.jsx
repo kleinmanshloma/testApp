@@ -8,7 +8,7 @@ const AddToDo = ({
   toDoDate,
   setToDoDescription,
   setToDo,
-  SetToDoList,
+  setToDoList,
   setToDoTime,
   setToDoDate,
 }) => {
@@ -58,7 +58,7 @@ const AddToDo = ({
         toDoList={toDoList}
         toDoTime={toDoTime}
         toDoDate={toDoDate}
-        SetToDoList={SetToDoList}
+        setToDoList={setToDoList}
         setToDo={setToDo}
         setToDoDescription={setToDoDescription}
         setToDoTime={setToDoTime}
