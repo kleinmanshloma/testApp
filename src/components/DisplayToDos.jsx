@@ -1,12 +1,11 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./DisplayToDos.css";
 
-const DisplayToDos = ({
-  toDoList,
-  setToDoList,
-  completedIDs,
-  setCompletedIDs,
-}) => {
+const DisplayToDos = () => {
+  const [toDoList, setToDoList] = useState([]);
+  const [completedIDs, setCompletedIDs] = useState([]);
+
   const handleComplete = (id, e) => {
     const newCompletedIDs = completedIDs.includes(id)
       ? completedIDs.filter((completedID) => completedID !== id)
@@ -18,35 +17,62 @@ const DisplayToDos = ({
 
     setCompletedIDs(newCompletedIDs);
 
-    localStorage.setItem("completedIDs", JSON.stringify(newCompletedIDs));
+    const completed = newCompletedIDs.includes(id);
+    const url = `http://localhost:4000/task/${id}`;
+    const method = "PATCH";
+
+    fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ completed }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleDelete = (id) => {
-    setToDoList(toDoList.filter((toDo) => toDo.id !== id));
-    console.log(toDoList);
-    localStorage.setItem("toDoList", JSON.stringify([toDoList]));
+    fetch(`http://localhost:4000/task/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setToDoList(toDoList.filter((toDo) => toDo._id !== id));
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
-    const completedIDsFromLocalStorage = JSON.parse(
-      localStorage.getItem("completedIDs")
-    );
-
-    if (completedIDsFromLocalStorage) {
-      setCompletedIDs(completedIDsFromLocalStorage);
-    }
-  }, [setCompletedIDs]);
+    fetch("http://localhost:4000/tasks")
+      .then((res) => res.json())
+      .then((data) => {
+        setToDoList(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <div>
       <h1>My To Do</h1>
       <ul>
         {toDoList.map((toDo) => {
-          const isCompleted = completedIDs.includes(toDo.id);
+          const isCompleted = completedIDs.includes(toDo._id);
           const completedItemClassName = isCompleted ? "completed" : "";
 
           return (
-            <li className="li" key={toDo.id}>
+            <li className="li" key={toDo._id}>
               <div className={completedItemClassName}>
                 {isCompleted && (
                   <div className="completed-overlay">
@@ -78,16 +104,15 @@ const DisplayToDos = ({
                 <div className="margin-top">
                   <button
                     className="button-delete"
-                    onClick={() => handleDelete(toDo.id)}
+                    onClick={() => handleDelete(toDo._id)}
                   >
                     Delete
                   </button>
-
                   <button
                     className="button-completed"
-                    onClick={(e) => handleComplete(toDo.id, e)}
+                    onClick={(e) => handleComplete(toDo._id, e)}
                   >
-                    {isCompleted ? "Mark Incomplete" : "Mark Complete"}
+                    {toDo.isCompleted ? "Mark Incomplete" : "Mark Complete"}
                   </button>
                 </div>
               </div>

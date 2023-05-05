@@ -1,59 +1,32 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import AddToDo from "./components/AddToDo";
 import DisplayToDos from "./components/DisplayToDos";
+/* import EditToDo from "./components/EditToDo"; */
 
 import "./App.css";
 
 function App() {
   const [toDoList, setToDoList] = useState([]);
-  const [toDo, setToDo] = useState("");
-  const [toDoDescription, setToDoDescription] = useState("");
-  const [toDoTime, setToDoTime] = useState("");
-  const [toDoDate, setToDoDate] = useState("");
-  const [completedIDs, setCompletedIDs] = useState([]);
 
-  // save and retrieve data from local storage
-
+  // fetch to do list from "http://localhost:4000/task"
   useEffect(() => {
-    const toDoListjson = JSON.parse(localStorage.getItem("toDoList"));
-    if (toDoListjson && toDoListjson.length > 0) {
-      setToDoList(toDoListjson);
-    }
+    fetch("http://localhost:4000/tasks")
+      .then((res) => res.json())
+      .then((data) => {
+        setToDoList(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("toDoList", JSON.stringify(toDoList));
-  }, [toDoList]);
 
   return (
     <div>
-      {
-        <>
-          <h1>To Do List</h1>
-          <AddToDo
-            toDo={toDo}
-            toDoDescription={toDoDescription}
-            toDoList={toDoList}
-            setToDoList={setToDoList}
-            setToDo={setToDo}
-            setToDoDescription={setToDoDescription}
-            toDoTime={toDoTime}
-            setToDoTime={setToDoTime}
-            toDoDate={toDoDate}
-            setToDoDate={setToDoDate}
-            completedIDs={completedIDs}
-            setCompletedIDs={setCompletedIDs}
-          />
-        </>
-      }
-      {toDoList.length > 0 && (
-        <DisplayToDos
-          toDoList={toDoList}
-          setToDoList={setToDoList}
-          completedIDs={completedIDs}
-          setCompletedIDs={setCompletedIDs}
-        />
-      )}
+      <h1>To Do List</h1>
+      <AddToDo />
+      {toDoList.length > 0 && <DisplayToDos />}
     </div>
   );
 }
