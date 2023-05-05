@@ -23,11 +23,11 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <>
       <h1>To Do List</h1>
       <AddToDo />
       {toDoList.length > 0 && <DisplayToDos />}
-    </div>
+    </>
   );
 }
 
