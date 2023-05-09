@@ -25,9 +25,7 @@ function App() {
     <>
       <h1>To Do List</h1>
       <AddToDo setToDoList={setToDoList} />
-      {toDoList.length > 0 && (
-        <DisplayToDos setToDoList={setToDoList} toDo={toDoList} />
-      )}
+      {toDoList.length > 0 && <DisplayToDos />}
     </>
   );
 }

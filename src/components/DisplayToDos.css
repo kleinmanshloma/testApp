@@ -8,6 +8,10 @@ ul {
   border-radius: 10px;
   padding: 30px;
 }
+.display-block {
+  display: block;
+  padding: 3rem;
+}
 
 .li {
   display: flex;
@@ -88,20 +92,20 @@ span {
 
 .completed-overlay {
   position: absolute;
-  top: -30px;
-  left: 0;
+  top: 5rem;
+  left: 4.5rem;
   z-index: 1;
-  width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: rotate(-26deg);
+  transform: rotate(-20deg);
+  width: 20rem;
+  height: 4rem;
 }
 
 .completed-text {
   text-decoration: underline;
   font-size: 56px;
   font-weight: bold;
-  color: rgba(34, 33, 33, 0.5);
+  color: rgba(30, 28, 28, 0.819);
 }
