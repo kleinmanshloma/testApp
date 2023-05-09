@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+// import { BrowserRouter as Router, Route } from "react-router-dom";
 import AddToDo from "./components/AddToDo";
 import DisplayToDos from "./components/DisplayToDos";
 /* import EditToDo from "./components/EditToDo"; */
@@ -15,7 +15,6 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setToDoList(data);
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);
@@ -25,8 +24,10 @@ function App() {
   return (
     <>
       <h1>To Do List</h1>
-      <AddToDo />
-      {toDoList.length > 0 && <DisplayToDos />}
+      <AddToDo setToDoList={setToDoList} />
+      {toDoList.length > 0 && (
+        <DisplayToDos setToDoList={setToDoList} toDo={toDoList} />
+      )}
     </>
   );
 }

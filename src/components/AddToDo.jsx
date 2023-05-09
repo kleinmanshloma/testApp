@@ -1,17 +1,15 @@
+import React, { useState } from "react";
+
 import Btn from "./Btn";
 
-const AddToDo = ({
-  toDoList,
-  toDo,
-  toDoDescription,
-  toDoTime,
-  toDoDate,
-  setToDoDescription,
-  setToDo,
-  setToDoList,
-  setToDoTime,
-  setToDoDate,
-}) => {
+const AddToDo = () => {
+  const [toDoList, setToDoList] = useState([]);
+  const [toDo, setToDo] = useState("");
+  const [toDoDescription, setToDoDescription] = useState("");
+  const [toDoTime, setToDoTime] = useState("00:00");
+  const [toDoDate, setToDoDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
   return (
     <div className="new-to-do">
       <form>
