@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Btn from "./Btn";
 
-const AddToDo = () => {
+const AddToDo = ({ setAddAToDo }) => {
   const [toDoList, setToDoList] = useState([]);
   const [toDo, setToDo] = useState("");
   const [toDoDescription, setToDoDescription] = useState("");
@@ -61,7 +61,9 @@ const AddToDo = () => {
         setToDoDescription={setToDoDescription}
         setToDoTime={setToDoTime}
         setToDoDate={setToDoDate}
+        setAddAToDo={setAddAToDo}
       />
+      <button onClick={() => setAddAToDo(false)}>Cancel</button>
     </div>
   );
 };

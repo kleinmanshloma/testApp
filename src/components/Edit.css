@@ -1,0 +1,20 @@
+.button-edit {
+  background-color: #f8faf8;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 2px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 50px;
+  height: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  float: right;
+}

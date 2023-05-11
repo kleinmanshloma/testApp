@@ -4,7 +4,6 @@ import "./centered.css";
 function Btn({
   toDo,
   toDoDescription,
-  toDoList,
   toDoTime,
   toDoDate,
   setToDoList,
@@ -12,6 +11,7 @@ function Btn({
   setToDoDescription,
   setToDoTime,
   setToDoDate,
+  setAddAToDo,
 }) {
   const addToDo = () => {
     // create obj for to do
@@ -53,7 +53,13 @@ function Btn({
 
   return (
     <div className="new-to-do-btn">
-      <div className="centered" onClick={addToDo}>
+      <div
+        className="centered"
+        onClick={() => {
+          addToDo();
+          setAddAToDo(false);
+        }}
+      >
         Add To Do
       </div>
     </div>
