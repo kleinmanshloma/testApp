@@ -1,0 +1,14 @@
+.btn-save {
+  background-color: #00093e;
+  border: none;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin: 15px 0px;
+  padding: 8px 16px;
+  border-radius: 5px;
+  color: aliceblue;
+  font-size: 22px;
+}

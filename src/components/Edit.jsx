@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import URL_DEV from "./URL";
 import "./Edit.css";
+import "./SaveBtn.css";
 
-const EditToDo = ({ editID, setEdit, setEditID }) => {
-  const [toDoList, setToDoList] = useState([]);
+const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
   const [title, setTitle] = useState("");
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  let toDo = toDoList.find((toDo) => toDo._id === editID);
+  console.log(toDo);
 
   function handleButtonClick(data) {
     console.log(errorMessage);
@@ -60,63 +63,73 @@ const EditToDo = ({ editID, setEdit, setEditID }) => {
   };
 
   return (
-    <div className="edit" key={editID}>
-      {errorMessage.length > 0 && (
-        <div>
-          {errorMessage}
-          <button onClick={handleErrorMessage}>X</button>
-        </div>
-      )}
+    <div className="no-to-do">
+      <div className="edit" key={editID}>
+        {errorMessage.length > 0 && (
+          <div>
+            {errorMessage}
+            <button onClick={handleErrorMessage}>X</button>
+          </div>
+        )}
 
-      <div className="edit-container">
-        <div className="edit-container-header">
-          <h1>Edit To Do</h1>
-        </div>
-        <div className="edit-container-body">
-          <div className="edit-container-body-input">
-            <label htmlFor="title">To Do</label>
-            <input
-              type="text"
-              name="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
+        <div className="edit-container">
+          <div className="edit-container-header">
+            <h1>Edit To Do</h1>
           </div>
-          <div className="edit-container-body-input">
-            <label htmlFor="description">Description</label>
-            <input
-              type="text"
-              name="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
+          <div className="edit-container-body">
+            <div className="edit-container-body-input">
+              <label htmlFor="title">To Do</label>
+              <input
+                className="textarea"
+                type="text"
+                name="title"
+                value={title}
+                placeholder={`${toDo.title}`}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="edit-container-body-input">
+              <label htmlFor="description">Description</label>
+              <input
+                className="textarea"
+                type="text"
+                name="description"
+                value={description}
+                placeholder={`${toDo.description}`}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <div className="edit-container-body-input">
+              <label htmlFor="time">Time</label>
+              <input
+                className="textarea"
+                type="time"
+                name="time"
+                value={time}
+                placeholder={`${toDo.time}`}
+                onChange={(e) => setTime(e.target.value)}
+              />
+            </div>
+            <div className="edit-container-body-input">
+              <label htmlFor="date">Date</label>
+              <input
+                className="textarea"
+                type="date"
+                name="date"
+                value={date}
+                placeholder={`${toDo.date}`}
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
           </div>
-          <div className="edit-container-body-input">
-            <label htmlFor="time">Time</label>
-            <input
-              type="text"
-              name="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-            />
+          <div className="edit-container-footer">
+            <button className="btn-save" onClick={() => handleInputChange()}>
+              Save
+            </button>
+            <button className="cancel-btn" onClick={() => setEdit(false)}>
+              Cancel
+            </button>
           </div>
-          <div className="edit-container-body-input">
-            <label htmlFor="date">Date</label>
-            <input
-              type="text"
-              name="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="edit-container-footer">
-          <button className="button-save" onClick={() => handleInputChange()}>
-            Save
-          </button>
-          <button className="button-cancel" onClick={() => setEdit(false)}>
-            Cancel
-          </button>
         </div>
       </div>
     </div>

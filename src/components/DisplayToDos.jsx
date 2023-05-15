@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import URL_DEV from "./URL";
-import "./DisplayToDos.css";
-import "./Edit.css";
+import EditToDo from "./Edit";
 
-const DisplayToDos = ({ edit, setEdit, setEditID, setToDoList, toDoList }) => {
+import "./DisplayToDos.css";
+
+const DisplayToDos = ({ edit, setEdit, setToDoList, toDoList, addAToDo }) => {
   const [completedIDs, setCompletedIDs] = useState([]);
   const [complete, setComplete] = useState(false);
+  const [editID, setEditID] = useState(null);
 
   const handleComplete = (id, e) => {
     let completeChecked = false;
@@ -66,88 +68,115 @@ const DisplayToDos = ({ edit, setEdit, setEditID, setToDoList, toDoList }) => {
       .catch((error) => {
         console.log(error);
       });
-  }, [completedIDs, toDoList]);
+  }, [completedIDs, setToDoList]);
 
   return (
-    <div className="display-block">
-      <h1>My To Do</h1>
-      <ul className="display-block">
-        {!edit &&
-          toDoList.map((toDo) => {
-            const isCompleted =
-              completedIDs.some((data) => data._id === toDo._id) ||
-              (toDo.completed &&
-                toDoList.some((data) => data._id === toDo._id));
+    <>
+      {edit && editID && (
+        <EditToDo
+          editID={editID}
+          setEdit={setEdit}
+          setEditID={setEditID}
+          toDoList={toDoList}
+          setToDoList={setToDoList}
+        />
+      )}
+      {!edit && (
+        <div className="display-block">
+          <h1>My To Do</h1>
+          <ul className="display-block">
+            {!edit &&
+              toDoList.map((toDo) => {
+                const isCompleted =
+                  completedIDs.some((data) => data._id === toDo._id) ||
+                  (toDo.completed &&
+                    toDoList.some((data) => data._id === toDo._id));
 
-            const completedItemClassName =
-              isCompleted && complete ? "line-through" : "initial";
+                const completedItemClassName =
+                  isCompleted && complete ? "line-through" : "initial";
 
-            return (
-              <li className="li" key={toDo._id}>
-                <div className={`  style`}>
-                  {isCompleted && (
-                    <div
-                      className={`completed-overlay  ${completedItemClassName}`}
-                    >
-                      <span className="completed-text">Completed</span>
-                    </div>
-                  )}
+                return (
+                  <li
+                    className="li"
+                    key={toDo._id}
+                    style={{ position: "relative" }}
+                  >
+                    <div className={`style`}>
+                      {isCompleted && (
+                        <div
+                          className={`completed-overlay ${completedItemClassName}`}
+                          style={{
+                            position: "absolute",
+                            top: "6rem",
+                            left: "12rem",
+                          }}
+                        >
+                          <span className="completed-text">Completed</span>
+                        </div>
+                      )}
 
-                  <div className="container">
-                    <div className="flex-div ">
-                      <span className="li-to-do">TO DO</span>
-                      <span className="li-to-do-name">{toDo.title}</span>
-                    </div>
-                    <div className="flex-div">
-                      <span className="li-description">DESCRIPTION</span>
-                      <span className="to-do li-description-name">
-                        {toDo.description}
-                      </span>
-                    </div>
-                    <div className="flex-div">
-                      <span className="li-time">TIME</span>
-                      <span className="to-do li-time-name">{toDo.time}</span>
-                    </div>
-                    <div className="flex-div margin-bottom">
-                      <span className="li-date">DATE</span>
-                      <span className="to-do li-date-name">{toDo.date}</span>
-                    </div>
-                  </div>
+                      <div className="container-display">
+                        <div className="flex-div ">
+                          <span className="li-to-do">TO DO</span>
+                          <span className="li-to-do-name">{toDo.title}</span>
+                        </div>
+                        <div className="flex-div">
+                          <span className="li-description">DESCRIPTION</span>
+                          <span className="to-do li-description-name">
+                            {toDo.description}
+                          </span>
+                        </div>
+                        <div className="flex-div">
+                          <span className="li-time">TIME</span>
+                          <span className="to-do li-time-name">
+                            {toDo.time}
+                          </span>
+                        </div>
+                        <div className="flex-div margin-bottom">
+                          <span className="li-date">DATE</span>
+                          <span className="to-do li-date-name">
+                            {toDo.date}
+                          </span>
+                        </div>
+                      </div>
 
-                  <div className="margin-top">
-                    <button
-                      className="button-delete"
-                      onClick={() => handleDelete(toDo._id)}
-                    >
-                      Delete
-                    </button>
-                    <button
-                      className="button-completed"
-                      onClick={(e) => handleComplete(toDo._id, e)}
-                    >
-                      {isCompleted ? "Incomplete" : "Complete"}
-                    </button>
+                      <div className="margin-top buttons">
+                        <button
+                          className="button-delete"
+                          onClick={() => handleDelete(toDo._id)}
+                        >
+                          Delete
+                        </button>
+                        <button
+                          className="button-completed"
+                          onClick={(e) => handleComplete(toDo._id, e)}
+                        >
+                          {isCompleted ? "Incomplete" : "Complete"}
+                        </button>
 
-                    <button
-                      className="button-edit"
-                      onClick={() => {
-                        setEditID(toDo._id);
-                        setEdit(true);
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        icon={faEdit}
-                        size="2x"
-                        color="orangered"
-                      />
-                    </button>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-      </ul>
-    </div>
+                        <button
+                          className="button-edit"
+                          onClick={() => {
+                            setEditID(toDo._id);
+                            setEdit(true);
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={faEdit}
+                            size="2x"
+                            color="orangered"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+          </ul>
+        </div>
+      )}
+      ;
+    </>
   );
 };
 

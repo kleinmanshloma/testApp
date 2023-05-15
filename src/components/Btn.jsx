@@ -1,4 +1,5 @@
-/* import { useState, useEffect } from "react"; */
+/* import { useEffect } from "react"; */
+import URL_DEV from "./URL";
 import "./centered.css";
 
 function Btn({
@@ -12,16 +13,23 @@ function Btn({
   setToDoTime,
   setToDoDate,
   setAddAToDo,
+  addAToDo,
 }) {
   const addToDo = () => {
+    const taskTime = new Date();
+    taskTime.setHours(0, parseInt(toDoTime), 0);
+    const formattedTime = taskTime.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
     // create obj for to do
     const newToDo = {
       id: Date.now().toString(),
       title: toDo,
       description: toDoDescription,
       complete: false,
-      time: toDoTime,
-      date: toDoDate,
+      time: formattedTime,
+      date: new Date(toDoDate).getDate(),
     };
 
     // add to data base using fetch and post method
@@ -49,6 +57,17 @@ function Btn({
     // set the time and date  to the initial values
     setToDoTime("00:00");
     setToDoDate(new Date().toISOString().slice(0, 10));
+
+    setAddAToDo(false);
+
+    fetch(`${URL_DEV}tasks`)
+      .then((res) => res.json())
+      .then((data) => {
+        setToDoList(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -57,7 +76,6 @@ function Btn({
         className="centered"
         onClick={() => {
           addToDo();
-          setAddAToDo(false);
         }}
       >
         Add To Do
