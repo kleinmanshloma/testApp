@@ -22,8 +22,6 @@ const DisplayToDos = ({ edit, setEdit, setToDoList, toDoList, addAToDo }) => {
       completeChecked = true;
     }
 
-    console.log(completeChecked);
-
     const url = `${URL_DEV}task/${id}`;
     const method = "PATCH";
 
@@ -36,7 +34,7 @@ const DisplayToDos = ({ edit, setEdit, setToDoList, toDoList, addAToDo }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        setToDoList(data);
       })
       .catch((error) => {
         console.log(error);
@@ -68,7 +66,7 @@ const DisplayToDos = ({ edit, setEdit, setToDoList, toDoList, addAToDo }) => {
       .catch((error) => {
         console.log(error);
       });
-  }, [completedIDs, setToDoList]);
+  }, [completedIDs, setToDoList, editID]);
 
   return (
     <>
@@ -79,6 +77,7 @@ const DisplayToDos = ({ edit, setEdit, setToDoList, toDoList, addAToDo }) => {
           setEditID={setEditID}
           toDoList={toDoList}
           setToDoList={setToDoList}
+          edit={edit}
         />
       )}
       {!edit && (

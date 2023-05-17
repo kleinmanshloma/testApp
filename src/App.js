@@ -4,6 +4,7 @@ import DisplayToDos from "./components/DisplayToDos";
 import URL_DEV from "./components/URL";
 import NoToDoFound from "./components/NoToDoFound";
 import AddBtn from "./components/AddBtn";
+import CreateUser from "./components/CreateUser";
 
 import "./App.css";
 import "./components/AddButton.css";
@@ -14,6 +15,7 @@ function App() {
   const [toDoList, setToDoList] = useState([]);
   const [edit, setEdit] = useState(false);
   const [addAToDo, setAddAToDo] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetch(`${URL_DEV}tasks`)
@@ -24,7 +26,7 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
-  }, [toDoList, setToDoList]);
+  }, [toDoList]);
 
   const handleSetAddToDo = (value) => {
     setAddAToDo(value);
@@ -32,18 +34,19 @@ function App() {
 
   return (
     <>
-      {addAToDo && (
+      {!user && <CreateUser />}
+      {user && addAToDo && (
         <div className="body-add-To-Do">
           <h1>To Do List</h1>
           <AddToDo setToDoList={setToDoList} setAddAToDo={setAddAToDo} />
         </div>
       )}
-      {!addAToDo && toDoList.length === 0 && (
+      {user && !addAToDo && toDoList.length === 0 && (
         <div className="body-no-to-do-found">
           <NoToDoFound setAddAToDo={handleSetAddToDo} />
         </div>
       )}
-      {!addAToDo && toDoList.length > 0 && (
+      {user && !addAToDo && toDoList.length > 0 && (
         <div className="body">
           <DisplayToDos
             edit={edit}
@@ -52,7 +55,7 @@ function App() {
             setToDoList={setToDoList}
             addAToDo={addAToDo}
           />
-          {!edit && <AddBtn setAddAToDo={setAddAToDo} />}
+          {user && !edit && <AddBtn setAddAToDo={setAddAToDo} />}
         </div>
       )}
     </>

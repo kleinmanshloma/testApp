@@ -11,7 +11,6 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
   const [errorMessage, setErrorMessage] = useState("");
 
   let toDo = toDoList.find((toDo) => toDo._id === editID);
-  console.log(toDo);
 
   function handleButtonClick(data) {
     console.log(errorMessage);
@@ -24,8 +23,7 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
     setErrorMessage("");
   };
 
-  const handleInputChange = (id) => {
-    console.log(editID);
+  const handleInputChange = () => {
     setEdit(true);
 
     const editToDo = {
@@ -35,7 +33,7 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
       time,
       date,
     };
-    console.log(editToDo, editID);
+
     const url = `${URL_DEV}task/${editID}`;
     const method = "PATCH";
 
@@ -46,19 +44,19 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
       },
       body: JSON.stringify(editToDo),
     })
-      .then((res) => res.json())
+      .then((res) => {
+        res.json();
+      })
       .then((data) => {
-        console.log(data.message);
+        console.log(editID);
         setErrorMessage(`Oops! Something went wrong. ${data.message}`);
         handleButtonClick(data);
         setToDoList(toDoList.filter((toDo) => toDo._id !== editID));
-        setToDoList([...toDoList, data]);
-        setEdit(false);
-        setEditID(null);
       })
       .catch((error) => {
         setEdit(false);
       });
+    setEdit(false);
     setEditID(null);
   };
 
