@@ -73,13 +73,13 @@ ul {
   list-style-type: none;
 }
 
-li {
+/* li {
   font-size: 24px;
   color: #00093e;
   position: relative;
   padding-left: 2.5em;
   margin-bottom: 1em;
-}
+} */
 
 .completed {
   text-decoration: line-through;

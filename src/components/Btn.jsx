@@ -1,9 +1,11 @@
 /* import { useEffect } from "react"; */
+import { Link } from "react-router-dom";
 import URL_DEV from "./URL";
 import "./centered.css";
 
 function Btn({
   toDo,
+  toDoList,
   toDoDescription,
   toDoTime,
   toDoDate,
@@ -16,6 +18,8 @@ function Btn({
   addAToDo,
 }) {
   const addToDo = () => {
+    const token = localStorage.getItem("token");
+
     const taskTime = new Date();
     taskTime.setHours(0, parseInt(toDoTime), 0);
     const formattedTime = taskTime.toLocaleTimeString("en-US", {
@@ -33,23 +37,22 @@ function Btn({
     };
 
     // add to data base using fetch and post method
-    fetch("http://localhost:4000/task", {
+    fetch(`${URL_DEV}/task`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(newToDo),
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // add the to do to the list
+        setToDoList((prevToDoList) => [...prevToDoList, newToDo]);
       })
       .catch((error) => {
         console.log(error);
       });
-
-    // add the to do to the list
-    setToDoList((prevToDoList) => [...prevToDoList, newToDo]);
 
     // clear the fields
     setToDo("");
@@ -60,7 +63,13 @@ function Btn({
 
     setAddAToDo(false);
 
-    fetch(`${URL_DEV}tasks`)
+    fetch(`${URL_DEV}/tasks`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setToDoList(data);
@@ -68,6 +77,8 @@ function Btn({
       .catch((error) => {
         console.log(error);
       });
+
+    // go to the display page
   };
 
   return (
@@ -78,7 +89,7 @@ function Btn({
           addToDo();
         }}
       >
-        Add To Do
+        <Link to="/DisplayToDos">Add To Do</Link>
       </div>
     </div>
   );

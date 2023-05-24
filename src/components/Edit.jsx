@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import URL_DEV from "./URL";
 import "./Edit.css";
 import "./SaveBtn.css";
+import { Link } from "react-router-dom";
 
 const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
   const [title, setTitle] = useState("");
@@ -12,20 +13,9 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
 
   let toDo = toDoList.find((toDo) => toDo._id === editID);
 
-  function handleButtonClick(data) {
-    console.log(errorMessage);
-    setInterval(() => {
-      setErrorMessage("");
-    }, 5000);
-  }
-
-  const handleErrorMessage = () => {
-    setErrorMessage("");
-  };
+  const token = localStorage.getItem("token");
 
   const handleInputChange = () => {
-    setEdit(true);
-
     const editToDo = {
       title,
       description,
@@ -34,36 +24,53 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
       date,
     };
 
-    const url = `${URL_DEV}task/${editID}`;
+    const url = `${URL_DEV}/task/${editID}`;
     const method = "PATCH";
 
     fetch(url, {
       method,
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(editToDo),
     })
       .then((res) => {
-        res.json();
+        if (!res.ok) {
+          throw new Error(
+            "Update failed. Please ensure all required fields are provided."
+          );
+        }
+        // Check if response has a JSON content type
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          return res.json();
+        } else {
+          throw new Error("Invalid response from the server");
+        }
       })
       .then((data) => {
-        console.log(editID);
-        setErrorMessage(`Oops! Something went wrong. ${data.message}`);
-        handleButtonClick(data);
+        setErrorMessage("");
         setToDoList(toDoList.filter((toDo) => toDo._id !== editID));
       })
       .catch((error) => {
+        setErrorMessage(
+          "An error occurred while updating the task. Please try again."
+        );
+      })
+      .finally(() => {
         setEdit(false);
       });
-    setEdit(false);
-    setEditID(null);
   };
+
+  function handleErrorMessage() {
+    setErrorMessage("");
+  }
 
   return (
     <div className="no-to-do">
       <div className="edit" key={editID}>
-        {errorMessage.length > 0 && (
+        {errorMessage && (
           <div>
             {errorMessage}
             <button onClick={handleErrorMessage}>X</button>
@@ -82,7 +89,7 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
                 type="text"
                 name="title"
                 value={title}
-                placeholder={`${toDo.title}`}
+                placeholder={toDo ? toDo.title : ""}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
@@ -93,7 +100,7 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
                 type="text"
                 name="description"
                 value={description}
-                placeholder={`${toDo.description}`}
+                placeholder={toDo ? toDo.description : ""}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
@@ -104,7 +111,7 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
                 type="time"
                 name="time"
                 value={time}
-                placeholder={`${toDo.time}`}
+                placeholder={toDo ? toDo.time : ""}
                 onChange={(e) => setTime(e.target.value)}
               />
             </div>
@@ -115,16 +122,21 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
                 type="date"
                 name="date"
                 value={date}
-                placeholder={`${toDo.date}`}
+                placeholder={toDo ? toDo.date : ""}
                 onChange={(e) => setDate(e.target.value)}
               />
             </div>
           </div>
           <div className="edit-container-footer">
-            <button className="btn-save" onClick={() => handleInputChange()}>
+            <button className="btn-save" onClick={handleInputChange}>
               Save
             </button>
-            <button className="cancel-btn" onClick={() => setEdit(false)}>
+            <button
+              className="cancel-btn"
+              onClick={() => {
+                <Link to="/DisplayToDos" />;
+              }}
+            >
               Cancel
             </button>
           </div>

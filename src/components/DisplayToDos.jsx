@@ -1,56 +1,74 @@
-import { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import URL_DEV from "./URL";
 import EditToDo from "./Edit";
+import AddBtn from "./AddBtn";
+import Navbar from "./Navbar";
 
 import "./DisplayToDos.css";
 
-const DisplayToDos = ({ edit, setEdit, setToDoList, toDoList, addAToDo }) => {
+const DisplayToDos = ({
+  edit,
+  setEdit,
+  setToDoList,
+  toDoList,
+  setAddAToDo,
+}) => {
   const [completedIDs, setCompletedIDs] = useState([]);
-  const [complete, setComplete] = useState(false);
   const [editID, setEditID] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [displayErrorMessage, setDisplayErrorMessage] = useState("");
 
-  const handleComplete = (id, e) => {
-    let completeChecked = false;
+  const token = localStorage.getItem("token");
 
-    if (completedIDs.some((data) => data._id === id)) {
-      setCompletedIDs(completedIDs.filter((data) => data._id !== id));
-    } else {
-      setCompletedIDs([...completedIDs, { _id: id }]);
-      completeChecked = true;
-    }
+  const handleComplete = async (id) => {
+    const isCompleted = completedIDs.some((data) => data._id === id);
+    const updatedCompletedIDs = isCompleted
+      ? completedIDs.filter((data) => data._id !== id)
+      : [...completedIDs, { _id: id }];
 
-    const url = `${URL_DEV}task/${id}`;
+    const completeChecked = !isCompleted;
+
+    const url = `${URL_DEV}/task/${id}`;
     const method = "PATCH";
 
-    fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ completed: completeChecked }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setToDoList(data);
-      })
-      .catch((error) => {
-        console.log(error);
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ completed: completeChecked }),
       });
-
-    setComplete(completeChecked); // update the complete state here
+      if (!response.ok) {
+        throw new Error("Failed to update task completion status.");
+      }
+      const data = await response.json();
+      setCompletedIDs(updatedCompletedIDs);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDelete = (id) => {
-    fetch(`${URL_DEV}task/${id}`, {
+    fetch(`${URL_DEV}/task/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to delete task.");
+        }
+        return res.json();
+      })
       .then((data) => {
         setToDoList(toDoList.filter((toDo) => toDo._id !== id));
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);
@@ -58,124 +76,134 @@ const DisplayToDos = ({ edit, setEdit, setToDoList, toDoList, addAToDo }) => {
   };
 
   useEffect(() => {
-    fetch(`${URL_DEV}tasks`)
-      .then((res) => res.json())
+    fetch(`${URL_DEV}/tasks`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Authentication failed");
+        }
+        return res.json();
+      })
       .then((data) => {
         setToDoList(data);
+        setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        setLoading(false);
+        setDisplayErrorMessage(error.message);
       });
-  }, [completedIDs, setToDoList, editID]);
+  }, [completedIDs, toDoList, editID]);
+
+  if (displayErrorMessage) {
+    return (
+      <div className="error-message">
+        <p>{displayErrorMessage}</p>
+        <Link to="/login">Login</Link>
+      </div>
+    );
+  }
+
+  if (edit && editID) {
+    return (
+      <EditToDo
+        editID={editID}
+        setEdit={setEdit}
+        setEditID={setEditID}
+        toDoList={toDoList}
+        setToDoList={setToDoList} // Fix the missing prop
+        edit={edit} // Fix the missing prop
+      />
+    );
+  }
 
   return (
-    <>
-      {edit && editID && (
-        <EditToDo
-          editID={editID}
-          setEdit={setEdit}
-          setEditID={setEditID}
-          toDoList={toDoList}
-          setToDoList={setToDoList}
-          edit={edit}
-        />
-      )}
-      {!edit && (
-        <div className="display-block">
-          <h1>My To Do</h1>
-          <ul className="display-block">
-            {!edit &&
-              toDoList.map((toDo) => {
-                const isCompleted =
-                  completedIDs.some((data) => data._id === toDo._id) ||
-                  (toDo.completed &&
-                    toDoList.some((data) => data._id === toDo._id));
+    <div>
+      <Navbar />
+      <AddBtn
+        setToDoList={setToDoList}
+        toDoList={toDoList}
+        setAddAToDo={setAddAToDo}
+      />
+      <h1>My To Do</h1>
+      {loading && <p>Loading...</p>}
+      <ul className="ul-box">
+        {toDoList.map((toDo) => {
+          const isCompleted = completedIDs.some(
+            (data) => data._id === toDo._id
+          );
 
-                const completedItemClassName =
-                  isCompleted && complete ? "line-through" : "initial";
+          return (
+            <li key={toDo._id}>
+              <div
+                className={`container-display ${
+                  isCompleted ? "completed" : ""
+                }`}
+              >
+                {isCompleted && (
+                  <div className="completed-overlay">
+                    <span className="completed-text">Completed</span>
+                  </div>
+                )}
 
-                return (
-                  <li
-                    className="li"
-                    key={toDo._id}
-                    style={{ position: "relative" }}
-                  >
-                    <div className={`style`}>
-                      {isCompleted && (
-                        <div
-                          className={`completed-overlay ${completedItemClassName}`}
-                          style={{
-                            position: "absolute",
-                            top: "6rem",
-                            left: "12rem",
-                          }}
-                        >
-                          <span className="completed-text">Completed</span>
-                        </div>
-                      )}
+                <div>
+                  <div className="flex-div ">
+                    <span className="li-to-do li-to-do-title">TO DO</span>
+                    <span className="li-to-do-content">{toDo.title}</span>
+                  </div>
+                  <div className="flex-div">
+                    <span className="li-description li-to-do-title">
+                      DESCRIPTION
+                    </span>
+                    <span className="li-to-do-content">{toDo.description}</span>
+                  </div>
+                  <div className="flex-div">
+                    <span className="li-time li-to-do-title">TIME</span>
+                    <span className="li-to-do-content">{toDo.time}</span>
+                  </div>
+                  <div className="flex-div margin-bottom">
+                    <span className="li-date li-to-do-title">DATE</span>
+                    <span className="li-to-do-content">{toDo.date}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="buttons-group">
+                <button
+                  className="button-delete"
+                  onClick={() => handleDelete(toDo._id)}
+                >
+                  Delete
+                </button>
+                <button
+                  className="button-completed"
+                  onClick={() => handleComplete(toDo._id)}
+                >
+                  {isCompleted ? "Incomplete" : "Complete"}
+                </button>
 
-                      <div className="container-display">
-                        <div className="flex-div ">
-                          <span className="li-to-do">TO DO</span>
-                          <span className="li-to-do-name">{toDo.title}</span>
-                        </div>
-                        <div className="flex-div">
-                          <span className="li-description">DESCRIPTION</span>
-                          <span className="to-do li-description-name">
-                            {toDo.description}
-                          </span>
-                        </div>
-                        <div className="flex-div">
-                          <span className="li-time">TIME</span>
-                          <span className="to-do li-time-name">
-                            {toDo.time}
-                          </span>
-                        </div>
-                        <div className="flex-div margin-bottom">
-                          <span className="li-date">DATE</span>
-                          <span className="to-do li-date-name">
-                            {toDo.date}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="margin-top buttons">
-                        <button
-                          className="button-delete"
-                          onClick={() => handleDelete(toDo._id)}
-                        >
-                          Delete
-                        </button>
-                        <button
-                          className="button-completed"
-                          onClick={(e) => handleComplete(toDo._id, e)}
-                        >
-                          {isCompleted ? "Incomplete" : "Complete"}
-                        </button>
-
-                        <button
-                          className="button-edit"
-                          onClick={() => {
-                            setEditID(toDo._id);
-                            setEdit(true);
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faEdit}
-                            size="2x"
-                            color="orangered"
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
-      )}
-      ;
-    </>
+                <button
+                  className="button-edit"
+                  onClick={() => {
+                    setEditID(toDo._id);
+                    setEdit(true);
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faEdit}
+                    size="2x"
+                    className="edit-icon"
+                  />
+                </button>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 

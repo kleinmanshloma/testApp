@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import URL_DEV from "./URL";
 import "./CreateUser.css";
 
@@ -14,8 +15,8 @@ const CreateUser = () => {
     setErrorMessage("");
   };
 
-  const handleSuccesMessage = () => {
-    // Clear the succes message
+  const handleSuccessMessage = () => {
+    // Clear the success message
     setMessage("");
   };
 
@@ -29,7 +30,7 @@ const CreateUser = () => {
       password,
     };
 
-    fetch(`${URL_DEV}user`, {
+    fetch(`${URL_DEV}/user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,17 +39,19 @@ const CreateUser = () => {
     })
       .then((res) => res.json())
       .then((result) => {
+        // set the token in local storage
+        localStorage.setItem("token", result.token);
+
         const message = result.error;
 
         if (message) {
           setErrorMessage(message);
           setMessage("");
-          return;
-        }
-        if (!message) {
-          setMessage("User created succesfully!!");
+        } else {
+          setMessage("User created successfully!!");
           setErrorMessage("");
-          return;
+          // Redirect to /DisplayTodos
+          window.location.href = "/DisplayTodos";
         }
       })
       .catch((error) => {
@@ -65,22 +68,29 @@ const CreateUser = () => {
   return (
     <>
       {errorMessage && (
-        <div className="error-message">
-          <p>{errorMessage}</p>
-          <button className="error-message-button" onClick={handleErrorMessage}>
-            X
-          </button>
+        <div className="error-message-container">
+          <div className="error-message">
+            <p>{errorMessage}</p>
+            <button
+              className="error-message-button"
+              onClick={handleErrorMessage}
+            >
+              X
+            </button>
+          </div>
         </div>
       )}
       {message && (
-        <div className="succes-message">
-          <p>{message}</p>
-          <button
-            className="succes-message-button"
-            onClick={handleSuccesMessage}
-          >
-            X
-          </button>
+        <div className="success-message-container">
+          <div className="success-message">
+            <p>{message}</p>
+            <button
+              className="success-message-button"
+              onClick={handleSuccessMessage}
+            >
+              X
+            </button>
+          </div>
         </div>
       )}
       <form className="user-form" onSubmit={handleSubmit}>
@@ -113,7 +123,14 @@ const CreateUser = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" className="button-user">
+          Submit
+        </button>
+        <div className="switch-to-login">
+          <p>
+            Already have an account? <Link to="/login">Login here</Link>
+          </p>
+        </div>
       </form>
     </>
   );

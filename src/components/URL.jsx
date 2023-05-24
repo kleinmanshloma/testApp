@@ -1,4 +1,4 @@
-const URL_DEV = "http://localhost:4000/";
+const URL_DEV = "http://localhost:4000";
 
 export default URL_DEV;
 

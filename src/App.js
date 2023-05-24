@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AddToDo from "./components/AddToDo";
 import DisplayToDos from "./components/DisplayToDos";
-import URL_DEV from "./components/URL";
 import NoToDoFound from "./components/NoToDoFound";
-import AddBtn from "./components/AddBtn";
 import CreateUser from "./components/CreateUser";
+import Login from "./components/Login";
+import Logout from "./components/Logout";
+import Navbar from "./components/Navbar";
+import Btn from "./components/Btn";
 
 import "./App.css";
 import "./components/AddButton.css";
@@ -15,50 +18,55 @@ function App() {
   const [toDoList, setToDoList] = useState([]);
   const [edit, setEdit] = useState(false);
   const [addAToDo, setAddAToDo] = useState(false);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    fetch(`${URL_DEV}tasks`)
-      .then((res) => res.json())
-      .then((data) => {
-        setToDoList(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [toDoList]);
 
   const handleSetAddToDo = (value) => {
     setAddAToDo(value);
   };
 
   return (
-    <>
-      {!user && <CreateUser />}
-      {user && addAToDo && (
-        <div className="body-add-To-Do">
-          <h1>To Do List</h1>
-          <AddToDo setToDoList={setToDoList} setAddAToDo={setAddAToDo} />
-        </div>
-      )}
-      {user && !addAToDo && toDoList.length === 0 && (
-        <div className="body-no-to-do-found">
-          <NoToDoFound setAddAToDo={handleSetAddToDo} />
-        </div>
-      )}
-      {user && !addAToDo && toDoList.length > 0 && (
-        <div className="body">
-          <DisplayToDos
-            edit={edit}
-            setEdit={setEdit}
-            toDoList={toDoList}
-            setToDoList={setToDoList}
-            addAToDo={addAToDo}
-          />
-          {user && !edit && <AddBtn setAddAToDo={setAddAToDo} />}
-        </div>
-      )}
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/CreateUser" element={<CreateUser />} />
+        <Route path="/Login" element={<Login />} />
+        <Route
+          path="/AddToDo"
+          element={
+            <AddToDo
+              setToDoList={setToDoList}
+              toDoList={toDoList}
+              setAddAToDo={setAddAToDo}
+            />
+          }
+        />
+        <Route
+          path="/NoToDoFound"
+          element={
+            <NoToDoFound
+              setToDoList={setToDoList}
+              toDoList={toDoList}
+              setAddAToDo={setAddAToDo}
+            />
+          }
+        />
+        <Route
+          path="/DisplayToDos"
+          element={
+            <DisplayToDos
+              edit={edit}
+              setEdit={setEdit}
+              setToDoList={setToDoList}
+              toDoList={toDoList}
+              setAddAToDo={setAddAToDo}
+            />
+          }
+        />
+        <Route
+          path="/Btn"
+          element={<Btn setToDoList={setToDoList} toDoList={toDoList} />}
+        />
+      </Routes>
+    </Router>
   );
 }
 

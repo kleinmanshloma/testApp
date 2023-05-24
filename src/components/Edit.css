@@ -14,7 +14,8 @@
 }
 
 .button-edit {
-  background-color: #ff9800;
+  background-color: orange;
+  color: red;
   width: auto !important;
   padding: 3px 34px;
   border: none;
@@ -23,6 +24,10 @@
   border-radius: 10px;
   margin: 4px 2px;
   cursor: pointer;
+}
+.button-edit:hover {
+  background-image: linear-gradient(to bottom right, #ff8300, #e4f904);
+  color: black;
 }
 
 .set-buttons,

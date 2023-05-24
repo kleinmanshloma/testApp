@@ -1,31 +1,33 @@
 .add-btn {
-  background-color: #00093e;
+  background-color: transparent;
   color: white;
-  border: none;
   font-size: 15px;
+  margin-left: 1rem;
+}
+.add-btn-text {
+  color: white;
+  font-size: 15px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+  margin-right: 1rem;
 }
 
-.new-to-do-btn {
-  background-color: #00093e;
+a {
+  text-decoration: none;
   color: white;
-  border: none;
-  font-size: 15px;
-  padding: 0.5rem;
-  border-radius: 5px;
-  cursor: pointer;
-  width: auto;
-  font-size: 1.1rem;
 }
 
 .btn-add-g {
   position: absolute;
   top: 5rem;
-  right: 2.5rem;
+  right: 5rem;
   margin: 1rem;
   background-color: #00093e;
+  color: white;
   border: none;
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   justify-content: center;
   align-items: center;
   float: right;
@@ -33,9 +35,14 @@
   border-radius: 150px;
 }
 
-.add-btn-text {
+.btn-add-g:hover {
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
+
+/* .add-btn-text {
   color: white;
   font-size: 15px;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-}
+} */

@@ -1,26 +1,9 @@
 ul {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
   list-style-type: none;
   border-radius: 10px;
   padding: 30px;
-}
-.display-block {
-  padding: 3rem;
-  margin: 1rem;
-  width: 40rem;
-}
-
-.li {
-  display: flex;
-  flex-direction: column;
-  margin: -15px;
-  margin-bottom: 2px;
-  padding-left: 0px;
-  width: 90%;
 }
 
 .new-to-do {
@@ -48,31 +31,37 @@ ul {
   border: none;
 }
 
-.container {
+.li {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  padding: 0;
+}
+
+.li-to-do-title {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgba(30, 28, 28, 0.819);
+}
+
+.li-to-do-content {
+  font-family: sans-serif, Georgia, "Times New Roman", Times;
+  font-size: 1.1rem;
+  color: rgba(30, 28, 28, 0.819);
+}
+
+.ul-box {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  width: 80%;
-  height: 100%;
-  border-radius: 5px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.098);
-  padding: 30px;
-  flex-wrap: wrap;
-  background-color: #e1e1e1;
 }
 
 .container-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  align-items: stretch;
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  width: 80%;
   height: 100%;
   border-radius: 5px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.098);
@@ -81,12 +70,17 @@ ul {
   background-color: #e1e1e1;
 }
 
-.buttons {
+.container-display:hover {
+  background-color: lightblue;
+}
+
+.buttons-group {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   flex-direction: row;
-  width: 60%;
+  justify-content: space-around;
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .button-delete {
@@ -102,6 +96,11 @@ ul {
   margin: 4px 2px;
   cursor: pointer;
 }
+.button-delete:hover {
+  background-color: #ff0000;
+  font-weight: bold;
+  color: black;
+}
 
 .button-completed {
   background-color: #4caf50;
@@ -116,6 +115,11 @@ ul {
   margin: 4px 2px;
   cursor: pointer;
 }
+.button-completed:hover {
+  background-color: #00ff00;
+  font-weight: bold;
+  color: black;
+}
 
 .flex-div {
   display: flex;
@@ -125,24 +129,18 @@ ul {
   flex-wrap: wrap;
 }
 
-span {
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 5px;
-}
-
-.margin-top {
-  margin-top: 15px;
-}
-
 .completed-overlay {
-  position: absolute;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 6rem;
+  left: 35%;
   z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: rotate(-20deg);
-  width: 20rem;
+  transform: rotate(-15deg);
+  width: fit-content;
   height: 4rem;
 }
 
@@ -151,4 +149,26 @@ span {
   font-size: 56px;
   font-weight: bold;
   color: rgba(30, 28, 28, 0.819);
+}
+.container-display {
+  position: relative;
+  /* Add your other styles */
+}
+
+.completed-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.completed-text {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
 }
