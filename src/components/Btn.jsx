@@ -1,6 +1,7 @@
 /* import { useEffect } from "react"; */
 import { Link } from "react-router-dom";
-import URL_DEV from "./URL";
+import config from "../config";
+
 import "./centered.css";
 
 function Btn({
@@ -37,7 +38,7 @@ function Btn({
     };
 
     // add to data base using fetch and post method
-    fetch(`${URL_DEV}/task`, {
+    fetch(`${config.URL_PROD}/task`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +64,7 @@ function Btn({
 
     setAddAToDo(false);
 
-    fetch(`${URL_DEV}/tasks`, {
+    fetch(`${config.URL_PROD}/tasks`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

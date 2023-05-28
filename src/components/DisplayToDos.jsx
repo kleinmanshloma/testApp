@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import URL_DEV from "./URL";
+import config from "../config";
 import EditToDo from "./Edit";
 import AddBtn from "./AddBtn";
 import Navbar from "./Navbar";
+import Footer from "./footer";
 
 import "./DisplayToDos.css";
 
@@ -23,38 +24,45 @@ const DisplayToDos = ({
 
   const token = localStorage.getItem("token");
 
-  const handleComplete = async (id) => {
-    const isCompleted = completedIDs.some((data) => data._id === id);
-    const updatedCompletedIDs = isCompleted
-      ? completedIDs.filter((data) => data._id !== id)
-      : [...completedIDs, { _id: id }];
+  const handleComplete = (id, e) => {
+    let completeChecked = false;
 
-    const completeChecked = !isCompleted;
+    if (completedIDs.some((data) => data._id === id)) {
+      setCompletedIDs(completedIDs.filter((data) => data._id !== id));
+      console.log(completedIDs.filter((data) => data._id !== id));
+    } else {
+      setCompletedIDs([...completedIDs, { _id: id }]);
+      console.log([...completedIDs, { _id: id }]);
+      completeChecked = true;
+    }
 
-    const url = `${URL_DEV}/task/${id}`;
+    const url = `${config.URL_PROD}/task/${id}`;
     const method = "PATCH";
 
-    try {
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ completed: completeChecked }),
+    fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ completed: completeChecked }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to update task completion status.");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        // Handle the response data as needed
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      if (!response.ok) {
-        throw new Error("Failed to update task completion status.");
-      }
-      const data = await response.json();
-      setCompletedIDs(updatedCompletedIDs);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const handleDelete = (id) => {
-    fetch(`${URL_DEV}/task/${id}`, {
+    fetch(`${config.URL_PROD}/task/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +84,7 @@ const DisplayToDos = ({
   };
 
   useEffect(() => {
-    fetch(`${URL_DEV}/tasks`, {
+    fetch(`${config.URL_PROD}/tasks`, {
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -90,7 +98,11 @@ const DisplayToDos = ({
         return res.json();
       })
       .then((data) => {
+        const completedIDs = data
+          .filter((task) => task.completed)
+          .map((task) => ({ _id: task._id }));
         setToDoList(data);
+        setCompletedIDs(completedIDs);
         setLoading(false);
       })
       .catch((error) => {
@@ -203,6 +215,7 @@ const DisplayToDos = ({
           );
         })}
       </ul>
+      <Footer />
     </div>
   );
 };

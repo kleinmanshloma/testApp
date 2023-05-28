@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import URL_DEV from "./URL";
+import config from "../config";
 
 import "./Login.css"; // Import the CSS file for the Login component
 
@@ -20,7 +20,7 @@ function Login() {
     event.preventDefault();
     // Perform login logic with email and password
 
-    fetch(`${URL_DEV}/users/login`, {
+    fetch(`${config.URL_PROD}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

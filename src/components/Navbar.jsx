@@ -4,11 +4,6 @@ import "./Navbar.css";
 const Navbar = ({ user, setUser }) => {
   const token = localStorage.getItem("token");
 
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("token");
-  };
-
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -18,11 +13,7 @@ const Navbar = ({ user, setUser }) => {
 
         <div className="navbar-user">
           {token ? (
-            <Link
-              to="/logout"
-              className="navbar-user-link"
-              onClick={handleLogout}
-            >
+            <Link to="/Logout" className="navbar-user-link">
               Logout
             </Link>
           ) : (

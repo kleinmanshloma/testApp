@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import URL_DEV from "./URL";
+import config from "../config";
 import "./CreateUser.css";
 
 const CreateUser = () => {
@@ -30,7 +30,7 @@ const CreateUser = () => {
       password,
     };
 
-    fetch(`${URL_DEV}/user`, {
+    fetch(`https://sk-todo.herokuapp.com/user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import URL_DEV from "./URL";
+import config from "../config";
 import "./Edit.css";
 import "./SaveBtn.css";
 import { Link } from "react-router-dom";
@@ -24,7 +24,7 @@ const EditToDo = ({ editID, setEdit, setEditID, toDoList, setToDoList }) => {
       date,
     };
 
-    const url = `${URL_DEV}/task/${editID}`;
+    const url = `${config.URL_PROD}/task/${editID}`;
     const method = "PATCH";
 
     fetch(url, {
