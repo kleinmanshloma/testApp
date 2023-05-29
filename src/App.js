@@ -22,11 +22,13 @@ function App() {
   const handleSetAddToDo = (value) => {
     setAddAToDo(value);
   };
+  console.log("App.js: ", toDoList);
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" />
+        {/* <Route path="/" element={<Login />} /> */}
         <Route path="/CreateUser" element={<CreateUser />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Logout" element={<Logout />} />

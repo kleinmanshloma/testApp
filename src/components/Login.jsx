@@ -5,6 +5,7 @@ import config from "../config";
 import "./Login.css"; // Import the CSS file for the Login component
 
 function Login() {
+  console.log(config.URL_PROD);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
